@@ -1,14 +1,17 @@
-import { Button, ButtonGroup, Heading, VStack } from '@chakra-ui/react';
+import { Button, ButtonGroup, Heading, Text, VStack } from '@chakra-ui/react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { Form, Formik } from 'formik';
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { TextField } from './TextField';
 import * as Yup from "yup"
 import { useNavigate } from 'react-router-dom';
+import { AccountContext } from '../AccountContext';
 
 export const Register = () => {
 
+  const {setUser} = useContext(AccountContext)
   const navigate = useNavigate();
+  const [error, setError] = useState(null)
   return (
     <Formik
     initialValues={ {username: '', password: ''}}
@@ -40,7 +43,12 @@ export const Register = () => {
             return res.json();
            }).then(data=>{
             if(!data) return
-            console.log(data);
+            setUser({...data})
+            if(data.status){
+              setError(data.status);
+            } else if (data.loggedIn){
+              navigate('/home')
+            }
            })
 
         }}>
@@ -50,9 +58,11 @@ export const Register = () => {
             <VStack as={Form} w={{base: '90%', md: '500px'}} m='auto' justifyContent='center' h='100vh' spacing={'1rem'}>
 
                 <Heading>Registro</Heading>
-
+                <Text as={'p'} color="red.500">
+                  {error}
+                </Text>
                 <TextField name='username' label='Usuario' placeholder='Ingresa el usuario' autoComplete='off'/>
-                <TextField name='password' label='Password' placeholder='Ingresa el password' autoComplete='off'/>
+                <TextField name='password' type="password" label='Password' placeholder='Ingresa el password' autoComplete='off'/>
                 <ButtonGroup pt='1rem'>
                     <Button colorScheme={'teal'} type='submit'>Registrase</Button>
                     <Button onClick={()=>navigate('/')} leftIcon={<ArrowBackIcon />} > Volver</Button>

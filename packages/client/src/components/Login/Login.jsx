@@ -1,8 +1,9 @@
-import { VStack,ButtonGroup,FormControl,FormLabel,Button,FormErrorMessage, Input, Heading } from '@chakra-ui/react'
+import { VStack,ButtonGroup,FormControl,FormLabel,Button,FormErrorMessage, Input, Heading, Text } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from "yup"
+import { AccountContext } from '../AccountContext'
 import { TextField } from './TextField'
 
 export const Login = () => {
@@ -36,6 +37,9 @@ export const Login = () => {
     //         actions.resetForm();
     //     }
     // })
+    
+    const [error, setError] = useState(null)
+    const {setUser} = useContext(AccountContext)
     const navigate = useNavigate();
 
   return (
@@ -69,7 +73,12 @@ export const Login = () => {
              return res.json();
             }).then(data=>{
              if(!data) return
-             console.log(data);
+             setUser({...data})
+             if(data.status){
+                setError(data.status)
+             }else if(data.loggedIn){
+                 navigate('/home')
+             }
             })
         }}>
 
@@ -78,6 +87,9 @@ export const Login = () => {
             <VStack as={Form} w={{base: '90%', md: '500px'}} m='auto' justifyContent='center' h='100vh' spacing={'1rem'}>
 
                 <Heading>Log In</Heading>
+                <Text as={'p'} color="red.500">
+                  {error}
+                </Text>
 
                 <TextField name='username' label='Usuario' placeholder='Ingresa el usuario' autoComplete='off'/>
                 <TextField name='password' label='Password' type='password'  placeholder='Ingresa el password' autoComplete='off'/>
