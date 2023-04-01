@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from "yup"
 import { AccountContext } from '../AccountContext'
-import { TextField } from './TextField'
+import { TextField } from '../TextField'
 
 export const Login = () => {
     //lo que se le pasa en el as, lo renderice como elemento form html, con los estilos de Vstack

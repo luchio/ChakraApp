@@ -5,6 +5,7 @@ import UserContext, { AccountContext } from '../components/AccountContext'
 import { Login } from '../components/Login/Login'
 import { Register } from '../components/Login/Register'
 import PrivateRoutes from '../components/PrivatesRoutes'
+import { Home } from '../components/home/Home'
 
 export const AppRouter = () => {
 
@@ -18,7 +19,7 @@ export const AppRouter = () => {
         <Route path='/register' element={<Register/>}/>
 
         <Route element={<PrivateRoutes/>}> 
-        <Route path='/home' element={<Text>Hola home</Text>}/>
+        <Route path='/home' element={<Home/>}/>
         </Route>
 
         <Route path='*' element={<Login/>}/>

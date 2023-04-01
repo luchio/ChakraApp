@@ -1,10 +1,18 @@
-import { ToggleColorMode } from "./components/ToggleColorMode"
+import { AppRouter } from './router/AppRouter'
+import { ToggleColorMode } from './components/ToggleColorMode'
+import UserContext from './components/AccountContext'
+import socket from './socket'
 
-export const  LoginApp = () => {
+export const  ChakraApp = () => {
+
+  socket.connect();
 
   return (
     <>
-      <ToggleColorMode/>
+     <UserContext>
+       <AppRouter/>
+       <ToggleColorMode/>
+      </UserContext>
     </>
   )
 }
